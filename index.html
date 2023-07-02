@@ -10,6 +10,22 @@
 </head>
 <body>
     <h1>Address Book</h1>
-    
+    <h2>Add a new contact:</h2>
+    <form id="addContact">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required><br><br>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required><br><br>
+        <btn id="submit" type="submit" class="btn btn-primary">Submit</btn>
+    </form>
+    <br>
+    <h2>Contacts:</h2>
+    <div id="contacts">
+        <ul id="contactList">
+        </ul>
+    </div>
+
 </body>
 </html>
