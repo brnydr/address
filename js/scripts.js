@@ -38,17 +38,35 @@ Contact.prototype.fullName = function() {
     return this.firstName + " " + this.lastName;
 }   
 
-// handleFormSubmission will be called when the form is submitted, and will call
-// the other functions to create a new contact, add it to the list, and display it
-// using UI functions.
-function handleFormSubmission () {
-
-}
-
-function handleLoadEvent() {
-
-}
 
 
+let addressBook = new AddressBook();
 
-window.addEventListener('load',  {handleLoadEvent});
+
+function listContacts(addressBookToDisplay) {
+    let contactsDiv = document.querySelector("div#contacts");
+    contactsDiv.innerText =  null;
+    const ul = document.createElement("ul");
+    Object.keys(addressBookToDisplay.contacts).forEach(function(key) {
+      const contact = addressBookToDisplay.findContact(key);
+      const li = document.createElement("li");
+      li.append(contact.fullName());
+      li.setAttribute("id", contact.id);
+      ul.append(li);
+    });
+    contactsDiv.append(ul);
+  }
+
+  function handleFormSubmission(e) {
+    e.preventDefault();
+    const inputtedFirstName = document.querySelector("input#new-first-name").value;
+    const inputtedLastName = document.querySelector("input#new-last-name").value;
+    const inputtedPhoneNumber = document.querySelector("input#new-phone-number").value;
+    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber);
+    addressBook.addContact(newContact);
+    listContacts(addressBook);
+  }
+
+  window.addEventListener("load", function (){
+    document.querySelector("form#addContact").addEventListener("submit", handleFormSubmission);
+  });
