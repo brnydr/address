@@ -29,6 +29,9 @@ AddressBook.prototype.findContact = function(id) {
     return true;
   };
 
+
+
+  //addresses is an array of address objects
 function Contact(firstName, lastName, phoneNumber, email, addresses) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -41,6 +44,16 @@ Contact.prototype.fullName = function() {
     return this.firstName + " " + this.lastName;
 }   
 
+function Address(street, city, state, zip) {
+    this.street = street;
+    this.city = city;
+    this.state = state;
+    this.zip = zip;
+}
+
+Address.prototype.fullAddress = function() { 
+    return this.street + ", " + this.city + ", " + this.state + " " + this.zip;
+};
 
 let addressBook = new AddressBook();
 let addressCounter = 0;
