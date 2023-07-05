@@ -14,12 +14,21 @@
   <form id="new-contact">
     <label for="new-first-name">First Name</label>
     <input type="text" id="new-first-name" name="new-first-name">
+    <br>
     <label for="new-last-name">Last Name</label>
     <input type="text" id="new-last-name" name="new-last-name">
+    <br>
     <label for="new-phone-number">Phone Number</label>
     <input type="text" id="new-phone-number" name="new-phone-number">
-    <input for="new-email" type="text" id="new-email" name="new-email">
+    <br>
     <label for="new-email">Email</label>
+    <input for="new-email" type="text" id="new-email" name="new-email">
+    <br>
+    <div id="addressDiv">
+        <label for="new-address">Address</label>
+        <input for="new-address" class="new=address" type="text" id="new-address" name="new-address"><br>
+        <button class="add-address" type="edit">Add Additional Address</button>
+    </div>
     <button type="submit">Add</button>
   </form>
 
@@ -31,6 +40,8 @@
     <p>First Name: <span id="first-name"></span></p>
     <p>Last Name: <span id="last-name"></span></p>
     <p>Phone Number: <span id="phone-number"></span></p>
+    <p>Email: <span id="email"></span></p>
+    <p>Address: <span id="address"></span></p>
     <button class="delete" type="button">Delete</button>
   </div>
 </body>
