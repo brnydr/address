@@ -9,27 +9,29 @@
     <title>Address Book</title>
 </head>
 <body>
-    <h1>Address Book</h1>
-    <h2>Add a new contact:</h2>
-    <form id="addContact">
-        <label for="firstName">First Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" required><br><br>
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone" required><br><br>
-        <btn id="submit" type="submit" class="btn btn-primary">Submit</btn>
-    </form>
-    <br>
-    <h2>Contacts:</h2>
-    <div id="contacts">
-    </div>
-    <div id="contact-details" class="hidden">
-      <p>First Name: <span id="first-name"></span></p>
-      <p>Last Name: <span id="last-name"></span></p>
-      <p>Phone Number: <span id="phone-number"></span></p>
-    </div>
-  </body>
+<h1>Address Book</h1>
+  <h2>Add a Contact:</h2>
+  <form id="new-contact">
+    <label for="new-first-name">First Name</label>
+    <input type="text" id="new-first-name" name="new-first-name">
+    <label for="new-last-name">Last Name</label>
+    <input type="text" id="new-last-name" name="new-last-name">
+    <label for="new-phone-number">Phone Number</label>
+    <input type="text" id="new-phone-number" name="new-phone-number">
+    <button type="submit">Add</button>
+  </form>
+
+  <h2>Contacts:</h2>
+  <div id="contacts">
+  </div>
+
+  <div id="contact-details" class="hidden">
+    <p>First Name: <span id="first-name"></span></p>
+    <p>Last Name: <span id="last-name"></span></p>
+    <p>Phone Number: <span id="phone-number"></span></p>
+    <button class="delete" type="button">Delete</button>
+  </div>
+</body>
 
 </body>
 </html> 
