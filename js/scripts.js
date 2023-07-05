@@ -120,14 +120,14 @@ function listContacts(addressBookToDisplay) {
     let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmail, addressArray);
     addressBook.addContact(newContact);
     listContacts(addressBook);
-    inputtedFirstName = null;
-    inputtedLastName = null;
-    inputtedPhoneNumber = null; 
-    inputtedEmail = null;
-    street = null;
-    city = null;
-    state = null;
-    zip = null;
+    document.querySelector("input#new-first-name").value = null;
+    document.querySelector("input#new-last-name").value = null;
+    document.querySelector("input#new-phone-number").value = null;
+    document.querySelector("input#new-email").value = null;
+    document.querySelector("input#new-street").value = null;
+    document.querySelector("input#new-city").value = null;
+    document.querySelector("input#new-state").value = null;
+    document.querySelector("input#new-zip").value = null;
     //I'll need to handle deleting the address fields after submission.
   
   }
