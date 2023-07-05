@@ -1,3 +1,4 @@
+// Business Logic
 function AddressBook() {
     this.contacts = {};
     this.currentId = 0;
@@ -6,7 +7,7 @@ function AddressBook() {
 AddressBook.prototype.addContact = function(contact) {
     this.currentId = this.assignId();
     this.contacts[this.currentId] = contact;
-}
+} 
 
 AddressBook.prototype.assignId = function() {
     this.currentId += 1;
@@ -39,10 +40,11 @@ Contact.prototype.fullName = function() {
 }   
 
 
-
 let addressBook = new AddressBook();
 
+// UI logic
 
+//removed bug from line 56 - originally id was set to contact.id, but was changed to key to match the key in the forEach loop.
 function listContacts(addressBookToDisplay) {
     let contactsDiv = document.querySelector("div#contacts");
     contactsDiv.innerText =  null;
@@ -51,11 +53,29 @@ function listContacts(addressBookToDisplay) {
       const contact = addressBookToDisplay.findContact(key);
       const li = document.createElement("li");
       li.append(contact.fullName());
-      li.setAttribute("id", contact.id);
+      li.setAttribute("id", key);
       ul.append(li);
     });
     contactsDiv.append(ul);
   }
+
+
+  function displayContactDetails(event) {
+    const contact = addressBook.findContact(event.target.id);
+    document.querySelector("#first-name").innerText = contact.firstName;
+    document.querySelector("#last-name").innerText = contact.lastName;
+    document.querySelector("#phone-number").innerText = contact.phoneNumber;
+    document.querySelector("button.delete").setAttribute("id", contact.id);
+    document.querySelector("div#contact-details").classList.remove("hidden");
+  }
+
+  function handleDelete(e) {
+    e.preventDefault();
+    addressBook.deleteContact(e.target.id);
+    document.querySelector("button.delete").removeAttribute("id");
+    document.querySelector("div#contact-details").setAttribute("class", "hidden");
+    listContacts(addressBook);
+  };
 
   function handleFormSubmission(e) {
     e.preventDefault();
@@ -65,8 +85,13 @@ function listContacts(addressBookToDisplay) {
     let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber);
     addressBook.addContact(newContact);
     listContacts(addressBook);
+    document.querySelector("input#new-first-name").value = null;
+    document.querySelector("input#new-last-name").value = null;
+    document.querySelector("input#new-phone-number").value = null;
   }
 
   window.addEventListener("load", function (){
-    document.querySelector("form#addContact").addEventListener("submit", handleFormSubmission);
+    document.querySelector("form#new-contact").addEventListener("submit", handleFormSubmission);
+    document.querySelector("div#contacts").addEventListener("click", displayContactDetails);
+    document.querySelector("button.delete").addEventListener("click", handleDelete);
   });
