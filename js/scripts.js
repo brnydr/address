@@ -58,6 +58,7 @@ Address.prototype.fullAddress = function() {
 let addressBook = new AddressBook();
 let addressCounter = 0;
 
+
 // UI logic
 
 //removed bug from line 56 - originally id was set to contact.id, but was changed to key to match the key in the forEach loop.
@@ -102,25 +103,33 @@ function listContacts(addressBookToDisplay) {
 //No matter what, addresses will need to be pushed into an array.
   function handleFormSubmission(e) {
     e.preventDefault();
-    const inputtedFirstName = document.querySelector("input#new-first-name").value;
-    const inputtedLastName = document.querySelector("input#new-last-name").value;
-    const inputtedPhoneNumber = document.querySelector("input#new-phone-number").value;
-    const inputtedEmail = document.querySelector("input#new-email").value;
-    const addresses = document.querySelectorAll(".new-address")
+    let inputtedFirstName = document.querySelector("input#new-first-name").value;
+    let inputtedLastName = document.querySelector("input#new-last-name").value;
+    let inputtedPhoneNumber = document.querySelector("input#new-phone-number").value;
+    let inputtedEmail = document.querySelector("input#new-email").value;
+    let street = document.querySelector("input#new-street").value;
+    let city = document.querySelector("input#new-city").value;
+    let state = document.querySelector("input#new-state").value;
+    let zip = document.querySelector("input#new-zip").value;
+    let newAddress = new Address(street, city, state, zip);
     let addressArray = [];
-    addresses.forEach(function(address) {
-        addressArray.push(address.value);
-    });
-
+    addressArray.push(newAddress);
+   // addresses.forEach(function(address) {
+   //     addressArray.push(address.value);
+ //   });
     let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmail, addressArray);
     addressBook.addContact(newContact);
     listContacts(addressBook);
-    document.querySelector("input#new-first-name").value = null;
-    document.querySelector("input#new-last-name").value = null;
-    document.querySelector("input#new-phone-number").value = null;
-    document.querySelector("input#new-email").value= null;
+    inputtedFirstName = null;
+    inputtedLastName = null;
+    inputtedPhoneNumber = null; 
+    inputtedEmail = null;
+    street = null;
+    city = null;
+    state = null;
+    zip = null;
     //I'll need to handle deleting the address fields after submission.
-    document.querySelector("input#new-address").value = null;
+  
   }
 
   function addAddress(e) {  
@@ -138,7 +147,6 @@ function listContacts(addressBookToDisplay) {
     addressInput.after(newAddressLabel);
     newAddressInput.after(document.createElement("br"));
     addressCounter ++;
-    
     };
    
 
