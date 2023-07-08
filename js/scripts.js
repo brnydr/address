@@ -1,4 +1,6 @@
-// Business Logic
+let addressBook = new AddressBook();
+
+// Business Logic for AddressBook ---------
 function AddressBook() {
     this.contacts = {};
     this.currentId = 0;
@@ -30,7 +32,7 @@ AddressBook.prototype.findContact = function(id) {
   };
 
 
-
+  // Business Logic for Contacts ---------
   //addresses is an array of address objects
 function Contact(firstName, lastName, phoneNumber, email, addresses) {
     this.firstName = firstName;
@@ -38,25 +40,29 @@ function Contact(firstName, lastName, phoneNumber, email, addresses) {
     this.phoneNumber = phoneNumber;
     this.email = email;
     this.addresses = addresses;
+    this.currentId = 0;
 }
 
 Contact.prototype.fullName = function() {
     return this.firstName + " " + this.lastName;
 }   
 
+Contact.prototype.fullAddress = function(index) {
+  return this.addresses[index].street + ", " + this.addresses[index].city + ", " + this.addresses[index].state + ", " + this.addresses[index].zip;
+}
+
+
+// Business Logic for Addresses ---------
 function Address(street, city, state, zip) {
     this.street = street;
     this.city = city;
     this.state = state;
     this.zip = zip;
+
 }
 
-Address.prototype.fullAddress = function() { 
-    return this.street + ", " + this.city + ", " + this.state + " " + this.zip;
-};
+let addressCounter = 2;
 
-let addressBook = new AddressBook();
-let addressCounter = 0;
 
 
 // UI logic
@@ -81,11 +87,18 @@ function listContacts(addressBookToDisplay) {
 //It will need to create new elements for each address and append them to the DOM.
   function displayContactDetails(event) {
     const contact = addressBook.findContact(event.target.id);
+    const addresses = contact.addresses;
+    for(i = 0; i < addresses.length; i++) {
+      let address = contact.fullAddress(i);
+      let addressList = document.querySelector("#addressList");
+      let addressLi = document.createElement("li");
+      addressLi.innerText = address;
+      addressList.append(addressLi);
+    }
     document.querySelector("#first-name").innerText = contact.firstName;
     document.querySelector("#last-name").innerText = contact.lastName;
     document.querySelector("#phone-number").innerText = contact.phoneNumber;
     document.querySelector("#email").innerText = contact.email;
-    document.querySelector("#address").innerText = contact.addresses;
     document.querySelector("button.delete").setAttribute("id", contact.id);
     document.querySelector("div#contact-details").classList.remove("hidden");
   }
@@ -98,60 +111,112 @@ function listContacts(addressBookToDisplay) {
     listContacts(addressBook);
   };
 
-//I'll need to write a function that handles whether there are multiple addressses. 
-//I'll need to write branching logic that will check if there are multiple addresses, and if so, display them all.
-//No matter what, addresses will need to be pushed into an array.
+
   function handleFormSubmission(e) {
     e.preventDefault();
     let inputtedFirstName = document.querySelector("input#new-first-name").value;
     let inputtedLastName = document.querySelector("input#new-last-name").value;
     let inputtedPhoneNumber = document.querySelector("input#new-phone-number").value;
     let inputtedEmail = document.querySelector("input#new-email").value;
-    let street = document.querySelector("input#new-street").value;
-    let city = document.querySelector("input#new-city").value;
-    let state = document.querySelector("input#new-state").value;
-    let zip = document.querySelector("input#new-zip").value;
-    let newAddress = new Address(street, city, state, zip);
     let addressArray = [];
-    addressArray.push(newAddress);
-   // addresses.forEach(function(address) {
-   //     addressArray.push(address.value);
- //   });
+    for(i = 1; i < addressCounter; i++) {
+      let inputtedStreet = document.querySelector(`input#new-street${i}`).value;
+      let inputtedCity = document.querySelector(`input#new-city${i}`).value;
+      let inputtedState = document.querySelector(`input#new-state${i}`).value;
+      let inputtedZip = document.querySelector(`input#new-zip${i}`).value;
+      let newAddress = new Address(inputtedStreet, inputtedCity, inputtedState, inputtedZip);
+      addressArray.push(newAddress);
+    }
+    
     let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmail, addressArray);
     addressBook.addContact(newContact);
     listContacts(addressBook);
-    document.querySelector("input#new-first-name").value = null;
-    document.querySelector("input#new-last-name").value = null;
-    document.querySelector("input#new-phone-number").value = null;
-    document.querySelector("input#new-email").value = null;
-    document.querySelector("input#new-street").value = null;
-    document.querySelector("input#new-city").value = null;
-    document.querySelector("input#new-state").value = null;
-    document.querySelector("input#new-zip").value = null;
-    //I'll need to handle deleting the address fields after submission.
-  
-  }
+
+    let allInputs = document.querySelectorAll("input.delete");
+    let inputArray = Array.from(allInputs);
+    
+    inputArray.forEach(function(input) {
+      input.value = null;
+    });
+
+    let newAddressDivs = document.querySelectorAll("div.remove");
+    let newAddressArray = Array.from(newAddressDivs);
+    newAddressArray.forEach(function(div) {
+      div.remove();
+  });
+
+  addressCounter = 2;
+}
 
   function addAddress(e) {  
     e.preventDefault();
-    const newAddressInput = document.createElement("input");
-    const newAddressLabel = document.createElement("label");
-    const addressInput = document.querySelector("input#new-address");
-    newAddressInput.type = "text";
-    newAddressInput.id = "new-address" + addressCounter;
-    newAddressInput.name = "new-address" + addressCounter;
-    newAddressInput.classList.add("new-address");
-    newAddressLabel.for = "new-address" + addressCounter;
-    newAddressLabel.innerText = "Address ";
-    addressInput.after(newAddressInput)
-    addressInput.after(newAddressLabel);
-    newAddressInput.after(document.createElement("br"));
+    let streetInput = document.createElement("input");
+    let streetLabel = document.createElement("label");
+    let cityInput = document.createElement("input");
+    let cityLabel = document.createElement("label");
+    let stateInput = document.createElement("input");
+    let stateLabel = document.createElement("label");
+    let zipInput = document.createElement("input");
+    let zipLabel = document.createElement("label");
+    let h4 = document.createElement("h4");
+    const addressDiv = document.querySelector("#addressDiv");
+    let newAddressDiv = document.createElement("div");
+  
+    //maybe the section below can be handled with a loop?
+  
+    h4.innerText = "Address " + addressCounter + ": ";
+    streetInput.required = true;
+    streetInput.type = "text"
+    streetInput.id = "new-street" + addressCounter;
+    streetInput.name = "new-street" 
+    streetInput.classList.add("delete");
+    streetInput.for = "new-street" 
+    streetLabel.innerText = "Number and Street Name:"
+    streetLabel.for = "new-street"
+    cityInput.required = true;
+    cityInput.type = "text"
+    cityInput.id = "new-city" + addressCounter;
+    cityInput.name = "new-city"
+    cityInput.classList.add("delete");
+    cityInput.for = "new-city"
+    cityLabel.innerText = "City:"
+    cityLabel.for = "new-city"
+    stateInput.required = true;
+    stateInput.type = "text"
+    stateInput.id = "new-state" + addressCounter;
+    stateInput.name = "new-state"
+    stateInput.classList.add("delete");
+    stateInput.for = "new-state"
+    stateLabel.innerText = "State:"
+    stateLabel.for = "new-state" 
+    zipInput.required = true;
+    zipInput.type = "text"
+    zipInput.id = "new-zip" + addressCounter;
+    zipInput.name = "new-zip"
+    zipInput.classList.add("delete");
+    zipInput.for = "new-zip"
+    zipLabel.innerText = "Zip Code:"
+
+    newAddressDiv.append(streetLabel);
+    newAddressDiv.append(streetInput);
+    newAddressDiv.append(cityLabel);
+    newAddressDiv.append(cityInput);
+    newAddressDiv.append(stateLabel);
+    newAddressDiv.append(stateInput);
+    newAddressDiv.append(zipLabel);
+    newAddressDiv.append(zipInput);
+    newAddressDiv.prepend(h4);
+    newAddressDiv.id = "addressDiv" + addressCounter;
+    newAddressDiv.classList.add("addressDiv");
+    newAddressDiv.classList.add("remove");
+  
+    addressDiv.after(newAddressDiv);
     addressCounter ++;
-    };
-   
+  }
 
 
-  window.addEventListener("load", function (){
+
+  window.addEventListener("load", function () {
     document.querySelector("form#new-contact").addEventListener("submit", handleFormSubmission);
     document.querySelector("div#contacts").addEventListener("click", displayContactDetails);
     document.querySelector("button.delete").addEventListener("click", handleDelete);
