@@ -13,27 +13,27 @@
   <h2>Add a Contact:</h2>
   <form id="new-contact">
     <label for="new-first-name">First Name</label>
-    <input type="text" id="new-first-name" name="new-first-name" required>
+    <input type="text" id="new-first-name" name="new-first-name" class="delete" required>
     <br>
     <label for="new-last-name">Last Name</label>
-    <input type="text" id="new-last-name" name="new-last-name" required>
+    <input type="text" id="new-last-name" name="new-last-name" class="delete" required>
     <br>
     <label for="new-phone-number">Phone Number</label>
-    <input type="text" id="new-phone-number" name="new-phone-number" required>
+    <input type="text" id="new-phone-number" name="new-phone-number" class="delete" required>
     <br>
     <label for="new-email">Email</label>
-    <input for="new-email" type="text" id="new-email" name="new-email" required>
+    <input for="new-email" type="text" id="new-email" name="new-email" class="delete" required>
     <br>
-    <div id="addressDiv">
-         <h4>Address:</h4>
-        <label for="new-street">Number and Street:</label>
-        <input for="new-street" class="new-class" type="text" id="new-street" name="new-street" required><br>
+    <div id="addressDiv" class="addressDiv">
+       <h4>Address:</h4>
+        <label for="new-street">Number and Street Name:</label>
+        <input for="new-street" class="delete" type="text" id="new-street1" name="new-street" required>
         <label for="new-city">City:</label>
-        <input for="new-city" class="new-class" type="text" id="new-city" name="new-city" required><br>
+        <input for="new-city" class="delete" type="text" id="new-city1" name="new-city" required>
         <label for ="new-state">State:</label>
-        <input for="new-state" class="new-class" type="text" id="new-state" name="new-state" required><br>
+        <input for="new-state" class="delete" type="text" id="new-state1" name="new-state" required>
         <label for="new-zip">Zip Code:</label>
-        <input for="new-zip" class="new-class" type="text" id="new-zip" name="new-zip" required><br>
+        <input for="new-zip" class="delete" type="text" id="new-zip1" name="new-zip" required>
         <button class="add-address" type="edit">Add Additional Address</button>
     </div>
     <button type="submit">Add</button>
@@ -48,7 +48,11 @@
     <p>Last Name: <span id="last-name"></span></p>
     <p>Phone Number: <span id="phone-number"></span></p>
     <p>Email: <span id="email"></span></p>
-    <p>Address: <span id="address"></span></p>
+    <p>Addresses: 
+      <ul id=addressList>
+
+      </ul>
+    </p>
     <button class="delete" type="button">Delete</button>
   </div>
 </body>
