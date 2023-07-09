@@ -82,12 +82,12 @@ function listContacts(addressBookToDisplay) {
     contactsDiv.append(ul);
   }
   
-//I'll need to write a function that handles whether there are multiple addressses.
-//It will need to iterate over the array of addresses and display them all.
-//It will need to create new elements for each address and append them to the DOM.
+//there's a bug where the li elements persist within ul - think this has to be taken care of in the delete
   function displayContactDetails(event) {
     const contact = addressBook.findContact(event.target.id);
     const addresses = contact.addresses;
+    const nameSpan = document.querySelector("#first-name");
+   if (nameSpan.innerText === "") {
     for(i = 0; i < addresses.length; i++) {
       let address = contact.fullAddress(i);
       let addressList = document.querySelector("#addressList");
@@ -95,6 +95,7 @@ function listContacts(addressBookToDisplay) {
       addressLi.innerText = address;
       addressList.append(addressLi);
     }
+  }
     document.querySelector("#first-name").innerText = contact.firstName;
     document.querySelector("#last-name").innerText = contact.lastName;
     document.querySelector("#phone-number").innerText = contact.phoneNumber;
@@ -103,6 +104,9 @@ function listContacts(addressBookToDisplay) {
     document.querySelector("div#contact-details").classList.remove("hidden");
   }
 
+  //need to handle the li elements in the ul - they persist when you click on a new contact
+  //there also needs to be a hide details function
+  //also this function doesn't work.
   function handleDelete(e) {
     e.preventDefault();
     addressBook.deleteContact(e.target.id);
