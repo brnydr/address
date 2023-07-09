@@ -64,8 +64,6 @@ function Address(street, city, state, zip, type) {
 
 let addressCounter = 2;
 
-
-
 // UI logic
 
 //removed bug from line 56 - originally id was set to contact.id, but was changed to key to match the key in the forEach loop.
@@ -87,15 +85,16 @@ function listContacts(addressBookToDisplay) {
     const contact = addressBook.findContact(event.target.id);
     const addresses = contact.addresses;
     const nameSpan = document.querySelector("#first-name");
-    if (nameSpan.innerText === "") {
+    //if (nameSpan.innerText === "") {
       for(i = 0; i < addresses.length; i++) {
         let address = contact.fullAddress(i);
         let addressList = document.querySelector("#addressList");
         let addressLi = document.createElement("li");
+        addressLi.classList.add("delete");
         addressLi.innerText = address;
         addressList.append(addressLi);
-      }
-    }
+     }
+  //  }
     document.querySelector("#first-name").innerText = contact.firstName;
     document.querySelector("#last-name").innerText = contact.lastName;
     document.querySelector("#phone-number").innerText = contact.phoneNumber;
@@ -109,8 +108,12 @@ function listContacts(addressBookToDisplay) {
   //also this function doesn't work.
   function handleDelete(e) {
     e.preventDefault();
+    let listItems = document.querySelectorAll("li.delete");
+    listItems.forEach(function(item) {
+      item.remove();
+   });
     addressBook.deleteContact(e.target.id);
-    document.querySelector("button.delete").removeAttribute("id");
+    // document.querySelector("button.delete").removeAttribute("id");
     document.querySelector("div#contact-details").setAttribute("class", "hidden");
     listContacts(addressBook);
   };
@@ -122,7 +125,7 @@ function listContacts(addressBookToDisplay) {
     let inputtedLastName = document.querySelector("#new-last-name").value;
     let inputtedPhoneNumber = document.querySelector("#new-phone-number").value;
     let inputtedEmail = document.querySelector("#new-email").value;
-   
+  
     let addressArray = [];
     for(i = 1; i < addressCounter; i++) {
       let inputtedType = document.querySelector(`#type${i}`).value;
