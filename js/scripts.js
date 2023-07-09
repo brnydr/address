@@ -6,6 +6,8 @@ function AddressBook() {
     this.currentId = 0;
 }
 
+
+
 AddressBook.prototype.addContact = function(contact) {
     this.currentId = this.assignId();
     this.contacts[this.currentId] = contact;
@@ -106,7 +108,7 @@ function listContacts(addressBookToDisplay) {
   //need to handle the li elements in the ul - they persist when you click on a new contact
   //there also needs to be a hide details function
   //also this function doesn't work.
-  function handleDelete(e) {
+  function handleDelete(e) 
     e.preventDefault();
     let listItems = document.querySelectorAll("li.delete");
     listItems.forEach(function(item) {
