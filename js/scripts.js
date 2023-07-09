@@ -48,16 +48,17 @@ Contact.prototype.fullName = function() {
 }   
 
 Contact.prototype.fullAddress = function(index) {
-  return this.addresses[index].street + ", " + this.addresses[index].city + ", " + this.addresses[index].state + ", " + this.addresses[index].zip;
+  return "Type: " + this.addresses[index].type + " | " + this.addresses[index].street + ", " + this.addresses[index].city + ", " + this.addresses[index].state + ", " + this.addresses[index].zip;
 }
 
 
 // Business Logic for Addresses ---------
-function Address(street, city, state, zip) {
+function Address(street, city, state, zip, type) {
     this.street = street;
     this.city = city;
     this.state = state;
     this.zip = zip;
+    this.type = type;
 
 }
 
@@ -82,26 +83,25 @@ function listContacts(addressBookToDisplay) {
     contactsDiv.append(ul);
   }
   
-//there's a bug where the li elements persist within ul - think this has to be taken care of in the delete
   function displayContactDetails(event) {
     const contact = addressBook.findContact(event.target.id);
     const addresses = contact.addresses;
     const nameSpan = document.querySelector("#first-name");
-   if (nameSpan.innerText === "") {
-    for(i = 0; i < addresses.length; i++) {
-      let address = contact.fullAddress(i);
-      let addressList = document.querySelector("#addressList");
-      let addressLi = document.createElement("li");
-      addressLi.innerText = address;
-      addressList.append(addressLi);
+    if (nameSpan.innerText === "") {
+      for(i = 0; i < addresses.length; i++) {
+        let address = contact.fullAddress(i);
+        let addressList = document.querySelector("#addressList");
+        let addressLi = document.createElement("li");
+        addressLi.innerText = address;
+        addressList.append(addressLi);
+      }
     }
-  }
     document.querySelector("#first-name").innerText = contact.firstName;
     document.querySelector("#last-name").innerText = contact.lastName;
     document.querySelector("#phone-number").innerText = contact.phoneNumber;
     document.querySelector("#email").innerText = contact.email;
     document.querySelector("button.delete").setAttribute("id", contact.id);
-    document.querySelector("div#contact-details").classList.remove("hidden");
+    document.querySelector("div#contact-details").classList.remove("hidden"); 
   }
 
   //need to handle the li elements in the ul - they persist when you click on a new contact
@@ -118,17 +118,19 @@ function listContacts(addressBookToDisplay) {
 
   function handleFormSubmission(e) {
     e.preventDefault();
-    let inputtedFirstName = document.querySelector("input#new-first-name").value;
-    let inputtedLastName = document.querySelector("input#new-last-name").value;
-    let inputtedPhoneNumber = document.querySelector("input#new-phone-number").value;
-    let inputtedEmail = document.querySelector("input#new-email").value;
+    let inputtedFirstName = document.querySelector("#new-first-name").value;
+    let inputtedLastName = document.querySelector("#new-last-name").value;
+    let inputtedPhoneNumber = document.querySelector("#new-phone-number").value;
+    let inputtedEmail = document.querySelector("#new-email").value;
+   
     let addressArray = [];
     for(i = 1; i < addressCounter; i++) {
-      let inputtedStreet = document.querySelector(`input#new-street${i}`).value;
-      let inputtedCity = document.querySelector(`input#new-city${i}`).value;
-      let inputtedState = document.querySelector(`input#new-state${i}`).value;
-      let inputtedZip = document.querySelector(`input#new-zip${i}`).value;
-      let newAddress = new Address(inputtedStreet, inputtedCity, inputtedState, inputtedZip);
+      let inputtedType = document.querySelector(`#type${i}`).value;
+      let inputtedStreet = document.querySelector(`#new-street${i}`).value;
+      let inputtedCity = document.querySelector(`#new-city${i}`).value;
+      let inputtedState = document.querySelector(`#new-state${i}`).value;
+      let inputtedZip = document.querySelector(`#new-zip${i}`).value;
+      let newAddress = new Address(inputtedStreet, inputtedCity, inputtedState, inputtedZip, inputtedType);
       addressArray.push(newAddress);
     }
     
@@ -154,6 +156,11 @@ function listContacts(addressBookToDisplay) {
 
   function addAddress(e) {  
     e.preventDefault();
+    let typeSelect = document.createElement("select");
+    let typeLabel = document.createElement("label");
+    let typeOptionHome = document.createElement("option");
+    let typeOptionWork = document.createElement("option");
+    let typeOptionOther = document.createElement("option");
     let streetInput = document.createElement("input");
     let streetLabel = document.createElement("label");
     let cityInput = document.createElement("input");
@@ -169,6 +176,16 @@ function listContacts(addressBookToDisplay) {
     //maybe the section below can be handled with a loop?
   
     h4.innerText = "Address " + addressCounter + ": ";
+    typeSelect.required = true;
+    typeSelect.id = "type" + addressCounter;
+    typeSelect.name = "type"
+    typeSelect.classList.add("delete");
+    typeOptionHome.innerText = "Home";
+    typeOptionHome.value = "Home";
+    typeOptionWork.innerText = "Work";
+    typeOptionWork.value = "Work";
+    typeOptionOther.innerText = "Other";
+    typeOptionOther.value = "Other";
     streetInput.required = true;
     streetInput.type = "text"
     streetInput.id = "new-street" + addressCounter;
@@ -200,7 +217,11 @@ function listContacts(addressBookToDisplay) {
     zipInput.classList.add("delete");
     zipInput.for = "new-zip"
     zipLabel.innerText = "Zip Code:"
-
+    typeSelect.append(typeOptionHome);
+    typeSelect.append(typeOptionWork);
+    typeSelect.append(typeOptionOther);
+    newAddressDiv.append(typeLabel);
+    newAddressDiv.append(typeSelect);
     newAddressDiv.append(streetLabel);
     newAddressDiv.append(streetInput);
     newAddressDiv.append(cityLabel);
